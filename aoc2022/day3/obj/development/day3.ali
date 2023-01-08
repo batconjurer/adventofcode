@@ -1,0 +1,258 @@
+V "GNAT Lib v12"
+M P W=b
+A -Og
+A -gnatA
+A -ffunction-sections
+A -fdata-sections
+A -g
+A -gnatwa
+A -gnatw.X
+A -gnatVa
+A -gnaty3
+A -gnatya
+A -gnatyA
+A -gnatyB
+A -gnatyb
+A -gnatyc
+A -gnaty-
+A -gnatyd
+A -gnatye
+A -gnatyf
+A -gnatyh
+A -gnatyi
+A -gnatyI
+A -gnatyk
+A -gnatyl
+A -gnatym
+A -gnatyn
+A -gnatyO
+A -gnatyp
+A -gnatyr
+A -gnatyS
+A -gnatyt
+A -gnatyu
+A -gnatyx
+A -mtune=generic
+A -march=x86-64
+P SS ZX
+
+RN
+RV NO_ACCESS_SUBPROGRAMS
+RV NO_ALLOCATORS
+RV NO_DIRECT_BOOLEAN_OPERATORS
+RV NO_DISPATCH
+RV NO_DISPATCHING_CALLS
+RV NO_EXCEPTION_HANDLERS
+RV NO_EXCEPTION_PROPAGATION
+RV NO_EXCEPTIONS
+RV NO_IO
+RV NO_IMPLICIT_CONDITIONALS
+RV NO_LOCAL_ALLOCATORS
+RV NO_NESTED_FINALIZATION
+RV NO_SECONDARY_STACK
+RV NO_STANDARD_ALLOCATORS_AFTER_ELABORATION
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_STREAMS
+RV NO_UNCHECKED_ACCESS
+RV NO_DEFAULT_INITIALIZATION
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_IMPLEMENTATION_ASPECT_SPECIFICATIONS
+RV NO_IMPLEMENTATION_ATTRIBUTES
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_IMPLICIT_ALIASING
+RV NO_IMPLICIT_LOOPS
+RV STATIC_DISPATCH_TABLES
+
+U main%b		day3.adb		be5a0017 NE OO SU
+W ada%s			ada.ads			ada.ali
+W ada.containers%s	a-contai.ads		a-contai.ali
+Z ada.containers.generic_array_sort%s
+Z ada.containers.helpers%s  a-conhel.adb	a-conhel.ali
+W ada.containers.vectors%s
+Z ada.exceptions%s	a-except.adb		a-except.ali
+Z ada.finalization%s	a-finali.ads		a-finali.ali
+Z ada.iterator_interfaces%s
+Z ada.streams%s		a-stream.adb		a-stream.ali
+W ada.strings%s		a-string.ads		a-string.ali
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W ada.strings.unbounded%s  a-strunb.adb		a-strunb.ali
+Z ada.tags%s		a-tags.adb		a-tags.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+Z ada.unchecked_deallocation%s
+Z system%s		system.ads		system.ali
+Z system.address_image%s  s-addima.adb		s-addima.ali
+Z system.finalization_masters%s  s-finmas.adb	s-finmas.ali
+Z system.img_int%s	s-imgint.ads		s-imgint.ali
+Z system.pool_global%s	s-pooglo.adb		s-pooglo.ali
+Z system.put_images%s	s-putima.adb		s-putima.ali
+Z system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+Z system.soft_links%s	s-soflin.adb		s-soflin.ali
+Z system.standard_library%s  s-stalib.adb	s-stalib.ali
+Z system.storage_elements%s  s-stoele.adb	s-stoele.ali
+Z system.storage_pools%s  s-stopoo.adb		s-stopoo.ali
+Z system.storage_pools.subpools%s  s-stposu.adb	s-stposu.ali
+Z system.stream_attributes%s  s-stratt.adb	s-stratt.ali
+Z system.strings.stream_ops%s  s-ststop.adb	s-ststop.ali
+
+D ada.ads		20220819080952 76789da1 ada%s
+D a-charac.ads		20220819080952 2d3ec45b ada.characters%s
+D a-chlat1.ads		20220819080952 e0d72e76 ada.characters.latin_1%s
+D a-contai.ads		20220819080952 61e5e089 ada.containers%s
+D a-cgarso.ads		20220819080952 9129bfa8 ada.containers.generic_array_sort%s
+D a-conhel.ads		20220819080952 20298884 ada.containers.helpers%s
+D a-conhel.adb		20220819080952 fe7a6827 ada.containers.helpers%b
+D a-convec.ads		20220819080952 5d39d84a ada.containers.vectors%s
+D a-convec.adb		20220819080952 81527b1a ada.containers.vectors%b
+D a-except.ads		20220819080952 2a7d8d70 ada.exceptions%s
+D a-finali.ads		20220819080952 bf4f806b ada.finalization%s
+D a-ioexce.ads		20220819080952 40018c65 ada.io_exceptions%s
+D a-iteint.ads		20220819080952 49a8bee2 ada.iterator_interfaces%s
+D a-stream.ads		20220819080952 119b8fb3 ada.streams%s
+D a-string.ads		20220819080952 90ac6797 ada.strings%s
+D a-strmap.ads		20220819080952 233229cd ada.strings.maps%s
+D a-sttebu.ads		20220819080952 18209c64 ada.strings.text_buffers%s
+D a-strunb.ads		20220819080952 5837d881 ada.strings.unbounded%s
+D a-stuten.ads		20220819080952 33c54060 ada.strings.utf_encoding%s
+D a-tags.ads		20220819080952 9eaa38c6 ada.tags%s
+D a-textio.ads		20220819080952 deada98a ada.text_io%s
+D a-unccon.ads		20220819080952 0e9b276f ada.unchecked_conversion%s
+D a-uncdea.ads		20220819080952 c3a8ac65 ada.unchecked_deallocation%s
+D interfac.ads		20220819080952 edec285f interfaces%s
+D i-c.ads		20220819080952 2284bf7c interfaces.c%s
+D i-cstrea.ads		20220819080952 e53d8b8e interfaces.c_streams%s
+D day3.adb		20221205015135 65f9a956 main%b
+D system.ads		20220819080952 a2da961d system%s
+D s-addima.ads		20220819080952 a1ec9d3a system.address_image%s
+D s-atocou.ads		20220819080952 dc18efc3 system.atomic_counters%s
+D s-atocou.adb		20220819080952 6fe685de system.atomic_counters%b
+D s-atopri.ads		20220819080952 1b132436 system.atomic_primitives%s
+D s-crtl.ads		20220819080952 8a0692f8 system.crtl%s
+D s-exctab.ads		20220819080952 91bef6ef system.exception_table%s
+D s-ficobl.ads		20220819080952 dc5161d4 system.file_control_block%s
+D s-finmas.ads		20220819080952 bd688734 system.finalization_masters%s
+D s-finroo.ads		20220819080952 4ff27390 system.finalization_root%s
+D s-imagei.ads		20220819080952 0d3f86a7 system.image_i%s
+D s-imgint.ads		20220819080952 bdb6f5ec system.img_int%s
+D s-memory.ads		20220819080952 5b8432d0 system.memory%s
+D s-parame.ads		20220819080952 d494a4a6 system.parameters%s
+D s-pooglo.ads		20220819080952 91708d21 system.pool_global%s
+D s-putima.ads		20220819080952 4e095881 system.put_images%s
+D s-secsta.ads		20220819080952 62cd9202 system.secondary_stack%s
+D s-soflin.ads		20220819080952 df77073e system.soft_links%s
+D s-stache.ads		20220819080952 0b81c1fe system.stack_checking%s
+D s-stalib.ads		20220819080952 1c9580f6 system.standard_library%s
+D s-stalib.adb		20220819080952 eb464a47 system.standard_library%b
+D s-stoele.ads		20220819080952 6d8e1ff4 system.storage_elements%s
+D s-stoele.adb		20220819080952 8f5a9db6 system.storage_elements%b
+D s-stopoo.ads		20220819080952 e9fa2dd8 system.storage_pools%s
+D s-stposu.ads		20220819080952 e251976f system.storage_pools.subpools%s
+D s-stratt.ads		20220819080952 f7dfd786 system.stream_attributes%s
+D s-string.ads		20220819080952 582aac7d system.strings%s
+D s-ststop.ads		20220819080952 c569db7c system.strings.stream_ops%s
+D s-traent.ads		20220819080952 c81cbf8c system.traceback_entries%s
+D s-unstyp.ads		20220819080952 fa2a7f59 system.unsigned_types%s
+D s-wchcon.ads		20220819080952 d9032363 system.wch_con%s
+D unchconv.ads		20220819080952 ca2f9e18 unchecked_conversion%s
+G a e
+G c Z b b [main standard 5 11 none]
+X 1 ada.ads
+16K9*Ada 20e8 27|1r6 1r23 2r6 3r6 7r23 15r29 24r24 30r26 56r26 84r26
+X 4 a-contai.ads
+16K13*Containers 28e19 27|3r10 15r33 24r28
+X 8 a-convec.ads
+62I9 Index_Type 27|16r7 25r7
+63+9 Element_Type 27|17r7 26r7
+74k24*Vectors 875e27 27|3w21 15r44 24r39
+81I12 Extended_Index{integer}
+91R9 Vector<11|43R9> 27|29r64[15] 34r25[15] 55r54[24] 59r20[24] 128r25[15]
+. 139r20[24]
+483U14 Append 27|41s16[15] 64s16[24]
+560V13 First_Index{integer} 27|140s28[24]
+570V13 Last_Index{81I12[27|24]} 27|144s28[24]
+X 13 a-iteint.ads
+24h9 Forward_Iterator
+32h9 Reversible_Iterator<24R9[8|119]>
+X 15 a-string.ads
+16K13*Strings 35e16 27|2r10 7r27 30r30 56r30 84r30
+X 18 a-strunb.ads
+85K21*Unbounded 765e26 27|2w18 7r35 30r38 56r38 84r38
+90R9*Unbounded_String<11|43R9> 744e15 27|11r18 12r18 21r21 32r14 58r14 81r37
+. 109r53
+96V13*Length{natural} 27|39s24
+107V13*To_Unbounded_String{90R9} 27|32s34 38s18 42s24 45s24 58s34 63s18
+120V13*To_String{string} 27|43s26 46s26 74s38 75s38
+336V13*Index{natural} 27|86s14
+X 21 a-textio.ads
+58K13*Text_IO 727e16 27|1w10 1r27
+66P9*File_Type 27|31r20 57r20
+68n23*In_File{68E9} 27|36r41 61r41
+113U14*Open 27|36s7 61s7
+114p7 File{66P9} 27|36r13 61r13
+115e7 Mode{68E9} 27|36r33 61r33
+116a7 Name{string} 27|36r50 61r50
+128U14*Close 27|50s7 66s7
+128p22 File{66P9} 27|50r14 66r14
+263U14*New_Line 27|77s7
+311V13*End_Of_File{boolean} 27|37s17 62s17
+491V13*Get_Line{string} 27|38s39 63s39
+491p23 File{66P9} 27|38r49 63r49
+507U14*Put_Line 27|73s7 74s7 75s7 76s7 135s7 153s7 156s4 158s4
+X 27 day3.adb
+5U11*Main 5b11 160l5 160t9
+7K12 SU=7:35 11r15 12r15 21r18 74r35 75r35 81r34 109r50
+10R9 Rucksack 13e14 17r23 71r38 91r42
+11r7 large{18|90R9} 74r54 99r32
+12r7 small{18|90R9} 75r54 100r31
+15K12 Rucksacks[8|74] 29r54 34r15 128r15
+20R9 Bag 22e14 26r23
+21r7 contents{18|90R9} 64m25 146r48 147r52 148r52
+24K12 Bags[8|74] 55r49 59r15 139r15
+29V13 ReadRucksacks{8|91R9[15]} 29b13 29>28 52l8 52t21 131s16
+29a28 filename{string} 36r58
+30K15 SU=30:38 30r53
+31p7 Input_File{21|66P9} 36m21 36r21 37r30 38r57 50m22 50r22
+32r7 line{18|90R9} 38m10 39r32 43r37 46r37
+33i7 str_length{integer} 39m10 43r49 46r44 46r66
+34r7 sacks{8|91R9[15]} 41m10 41r10 51r14
+55V13 ReadBags{8|91R9[24]} 55b13 55>23 68l8 68t16 143s16
+55a23 filename{string} 61r58
+56K15 SU=56:38 56r53
+57p7 Input_File{21|66P9} 61m21 61r21 62r30 63r57 66m22 66r22
+58r7 line{18|90R9} 63m10 64r37
+59r7 sacks{8|91R9[24]} 64m10 64r10 67r14
+71U14 DisplayRuckSack 71b14 71>31 78l8 78t23
+71r31 sack{10R9} 74r49 75r49
+81V13 ContainsChar{boolean} 81b13 81>27 81>55 87l8 87t20 99s13 100s12 116s13
+. 117s12 118s12
+81r27 sack{18|90R9} 86r21
+81e55 c{character} 86r32
+84K15 SU=84:38 84r53
+91V13 IntersectionPriority{natural} 91b13 91>35 106l8 106t28 133s23
+91r35 sack{10R9} 99r27 100r26
+92a7 character{string} 99r39 100r38
+94i7 intersection{natural} 102m13 102r29 105r14
+97i11 J{integer} 99r50 100r49 102r44
+109V13 BadgePriority{natural} 109b13 109>28 109>35 109>42 125l8 125t21 145s23
+109r28 sack1{18|90R9} 116r27
+109r35 sack2{18|90R9} 117r26
+109r42 sack3{18|90R9} 118r26
+110a7 character{string} 116r34 117r33 118r33
+112i7 intersection{natural} 124r14
+115i11 J{integer} 116r45 117r44 118r44 120r20
+127U14 PartOne 127b14 136l8 136t15 157s4
+128r7 sacks{8|91R9[15]} 131m7 132r19
+129i7 sum{natural} 133m10 133r17 135r36
+132r11 sack{10R9} 133r45
+138U14 PartTwo 138b14 154l8 154t15 159s4
+139r7 sacks{8|91R9[24]} 140r22 143m7 144r22 146r38 147r38 148r38
+140i7 A{natural} 144r13 146r45 147r45 148r45 150m10 150r15
+141i7 sum{natural} 145m10 145r17 153r36
+X 28 system.ads
+67M9*Address
+X 40 s-memory.ads
+51V13*Alloc{28|67M9} 101i<c,__gnat_malloc>22
+66U14*Free 102i<c,__gnat_free>22
+74V13*Realloc{28|67M9} 103i<c,__gnat_realloc>22
+X 48 s-stalib.adb
+87U14 Break_Start 88i<c,__gnat_break_start>22
+

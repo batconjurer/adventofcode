@@ -1,0 +1,5 @@
+FileVersion = 1
+
+[Project]
+Name = "day9"
+StartupObject = "day9.Program"

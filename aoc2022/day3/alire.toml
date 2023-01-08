@@ -1,0 +1,9 @@
+name = "day3"
+description = "Shiny new project"
+version = "0.1.0-dev"
+
+authors = ["Jacob Turner"]
+maintainers = ["Jacob Turner <jacob.turner870@gmail.com>"]
+maintainers-logins = ["batconjurer"]
+
+executables = ["day3"]

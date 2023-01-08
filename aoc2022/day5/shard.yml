@@ -1,0 +1,13 @@
+name: day5
+version: 0.1.0
+
+authors:
+  - your-name-here <jacob.turner870@gmail.com>
+
+targets:
+  day5:
+    main: src/day5.cr
+
+crystal: 1.6.2
+
+license: MIT
