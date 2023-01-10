@@ -3,6 +3,8 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 
+use rayon::prelude::*;
+
 fn height(character: char) -> u8 {
     if character == 'S' {
         return 0;
@@ -120,49 +122,45 @@ fn adjacent((x, y): (usize, usize), max_x: usize, max_y: usize) -> Vec<(usize, u
     adj
 }
 
-fn bfs(graph: &Vec<Vec<char>>, start: (usize, usize), end: (usize, usize)) -> u64 {
-    let mut queue = VecDeque::new();
-    let mut explored = HashMap::new();
-    queue.push_back(start);
+fn bfs(graph: &Vec<Vec<char>>, starts: Vec<(usize, usize)>, end: (usize, usize)) -> u64 {
+    let starts = starts.into_iter().map(|x| (x, 0u64)).collect::<Vec<_>>();
+    let mut queue = VecDeque::from(starts);
+    let mut distances = HashMap::new();
     let max_x = graph.len() - 1;
     let max_y = graph[0].len() - 1;
-    while let Some(next) = queue.pop_front() {
+    while let Some((next, dist)) = queue.pop_front() {
+        if &dist > distances.get(&next).unwrap_or(&u64::MAX) {
+            continue;
+        }
         if next == end {
-            break;
+            return dist;
         }
         for pos in adjacent(next, max_x, max_y) {
             if height(graph[pos.0][pos.1]) <= height(graph[next.0][next.1]) + 1 {
-                if !explored.contains_key(&pos) {
-                    explored.insert(pos, next);
-                    queue.push_back(pos);
+                if let Some(prev) = distances.get(&pos) {
+                    // we have found a shorter path
+                    if *prev > dist + 1 {
+                        distances.insert(pos, dist + 1);
+                        queue.push_back((pos, dist + 1));
+                    }
+                } else {
+                    distances.insert(pos, dist + 1);
+                    queue.push_back((pos, dist + 1));
                 }
             }
         }
     }
-    let mut length = 0;
-    let mut prev = end;
-    while prev != start {
-        prev = match explored.get(&prev) {
-            Some(prev) => *prev,
-            None => return u64::MAX,
-        };
-        length += 1;
-    }
-    length
+    u64::MAX
 }
 
-fn part_two(graph: &ScenicGraph) -> u64 {
-    graph.starts
-        .iter()
-        .map(|start| bfs(&graph.topo, *start, graph.end))
-        .min()
-        .unwrap()
+fn part_two(graph: ScenicGraph) -> u64 {
+    bfs(&graph.topo, graph.starts, graph.end)
 }
 
 fn main() {
     let graph = parse_input("input.txt");
-    let length = bfs(&graph.topo, graph.start, graph.end);
+    let length = bfs(&graph.topo, vec![graph.start], graph.end);
     println!("Part one: {}", length);
     let graph = parse_scenic("input.txt");
-    println!("Part two: {}", part_two(&graph));
+    println!("Part two: {}", part_two(graph));
 }

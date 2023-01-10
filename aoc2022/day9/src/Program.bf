@@ -263,9 +263,9 @@ class Program
 	public static int Main(String[] args)
 	{
         var file1 = scope String();
-        PartOne("/home/satan/Projects/aoc2022/day9/test.txt", file1);
+        PartOne("/home/satan/Projects/adventofcode/aoc2022/day9/test.txt", file1);
         var file2 = scope String();
-        PartTwo("/home/satan/Projects/aoc2022/day9/input.txt", file2);
+        PartTwo("/home/satan/Projects/adventofcode/aoc2022/day9/input.txt", file2);
 		return 0;
 	}
 
