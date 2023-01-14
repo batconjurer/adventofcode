@@ -174,8 +174,8 @@ class Program
 {
 	public static int Main(String[] args)
 	{
-        partOne("/home/satan/Projects/aoc2022/day14/input.txt");
-        partTwo("/home/satan/Projects/aoc2022/day14/input.txt");
+        partOne("/home/satan/Projects/adventofcode/aoc2022/day14/input.txt");
+        partTwo("/home/satan/Projects/adventofcode/aoc2022/day14/input.txt");
 		return 0;
 	}
 

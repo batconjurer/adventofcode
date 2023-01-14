@@ -1,14 +1,12 @@
 use std::cmp::{max, min};
-use std::collections::HashSet;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 
 use itertools::Itertools;
-use rayon::iter;
-use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+use rayon::prelude::*;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 struct Sensor {
     pub pos: (i64, i64),
     pub beacon: (i64, i64),
@@ -22,18 +20,6 @@ impl Sensor {
             beacon,
             radius: dist(pos, beacon),
         }
-    }
-
-    fn not_beacon(&self, pos: (i64, i64)) -> bool {
-        if pos == self.beacon {
-            false
-        } else {
-            dist(self.pos, pos) <= self.radius
-        }
-    }
-
-    fn maybe_beacon(&self, pos: (i64, i64)) -> bool {
-        !(pos == self.beacon || dist(self.pos, pos) <= self.radius)
     }
 }
 
@@ -51,7 +37,7 @@ fn parse_input(filename: &str) -> Vec<Sensor> {
             &pieces[2][2..].trim_end_matches(","),
             10)
             .unwrap();
-        let pos_y = i64::from_str_radix(
+        let pos_y = i64::from_str_radix(qq
             &pieces[3][2..].trim_end_matches(":"),
             10)
             .unwrap();
@@ -76,49 +62,119 @@ fn dist(pos1: (i64, i64), pos2: (i64, i64)) -> u64 {
     ((pos1.0 - pos2.0).abs() + (pos1.1 - pos2.1).abs()) as u64
 }
 
+/// Checks if two intervals intersect
+fn intersects((min1, max1): &(i64, i64), (min2, max2): &(i64, i64)) -> bool {
+    // left side of second interval contained in first
+    if min1 <= min2 && min2 <= max1 {
+        return true;
+    }
+    // right side of second interval contained in first
+    if min1 <= max2 && max2 <= max1 {
+        return true;
+    }
+    // right side contains left as subset
+    if min2 <= min1 && min1 <= max2 {
+        return true;
+    }
+    false
+}
+
+/// Computes the union of two intersecting intervals
+fn union((min1, max1): (i64, i64), (min2, max2): (i64, i64)) -> (i64, i64) {
+    (min(min1, min2), max(max1, max2))
+}
+
+#[derive(Debug, Clone, Default)]
+struct DisjointUnion {
+    intervals: Vec<(i64, i64)>
+}
+
+impl DisjointUnion {
+
+    fn new(intervals: Vec<(i64, i64)>) -> Self {
+        let mut du = DisjointUnion::default();
+        for interval in intervals {
+            du.push(interval);
+        }
+        du
+    }
+
+    fn push(&mut self, interval: (i64, i64)) {
+        let union = self.intervals
+            .iter()
+            .filter(|i| intersects(i, &interval))
+            .fold(interval, |acc, int| union(acc, *int));
+        self.intervals.retain(|int| !intersects(int,&interval));
+        self.intervals.push(union);
+    }
+}
+
+fn produce_intervals(sensors: &[Sensor], y: i64) -> Vec<(i64, i64)> {
+    sensors.iter()
+        .filter_map(|s| {
+            if (s.pos.1 - y).abs() > s.radius as i64 {
+                None
+            } else {
+                let radius = s.radius as i64;
+                let min = (s.pos.1 - y).abs() - radius + s.pos.0;
+                let max = radius - (s.pos.1 - y).abs() + s.pos.0;
+                Some((min, max))
+            }
+        })
+        .collect()
+}
+
 fn part_one(filename: &str) {
     let sensors = parse_input(filename);
-    let mut positions = HashSet::new();
-    for sensor in sensors {
-        let upper = sensor.pos.0 + (sensor.pos.1 - 2000000).abs() - (sensor.radius as i64);
-        let lower = (sensor.radius as i64)  - (sensor.pos.1 - 2000000).abs() + sensor.pos.0;
-        let x = dist((upper, 2000000), sensor.pos);
-        let y = dist((lower, 2000000), sensor.pos);
-        for position in lower..=upper {
-            positions.insert(position);
-        }
-        positions.remove(&sensor.beacon.0);
-    }
-    println!("Part 1: {}", positions.len());
+    let intervals = produce_intervals(&sensors, 2000000);
+    let beacons =  sensors
+        .iter()
+        .filter(|s| s.beacon.1 == 2000000)
+        .dedup_by(|s, t| s.beacon == t.beacon)
+        .count() as i64;
+    let seen = DisjointUnion::new(intervals)
+        .intervals
+        .into_iter()
+        .map(|(a, b)| 1 + b - a )
+        .sum::<i64>() - beacons;
+
+    println!("Part 1: {}", seen);
 }
 
 fn part_two(filename: &str) {
-    let mut sensors = parse_input(filename);
-    sensors.sort_by_key(|sensor| -(sensor.radius as i64));
-    let mut x = 0i64;
-    let mut  y = 0i64;
-    //const MAX: i64 = 20;
-    const MAX: i64 = 4000000i64;
-    while (x <= MAX && y <= MAX) {
-        match sensors
+    let sensors = parse_input(filename);
+    let (intervals, y) = (0..4000001i64).into_par_iter()
+        .map(|y| (DisjointUnion::new(produce_intervals(&sensors, y)).intervals, y))
+        .find_any(|(ints, _)| !ints.is_empty() && !ints
             .iter()
-            .find(|sensor| !sensor.maybe_beacon((x, y))) {
-            Some(sensor) => {
-                y = sensor.radius as i64 - (sensor.pos.0 - x).abs() + sensor.pos.1 + 1;
-                if y > MAX {
-                    y = 0;
-                    x += 1;
-                }
-            }
-            None => {
-                println!("Part 2: {}", x * 4000000 + y);
-                break;
-            }
-        }
-    }
+            .any(|(min, max)| *min <= 0 && 4000000 <= *max)
+        ).unwrap();
+    let x = intervals.into_iter()
+        .find(|(_, max)| 0 <= *max && *max < 4000000)
+        .unwrap().1 + 1;
+    println!("Part two: {}", x * 4000000 + y);
 }
 
 fn main() {
     part_one("input.txt");
-    //part_two("input.txt");
+    part_two("input.txt");
+
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_disjoint_union() {
+        let mut du = DisjointUnion {
+            intervals: vec![(1, 2), (3, 4), (5, 6), (7, 8)],
+        };
+
+        du.push((4, 7));
+        assert_eq!(du.intervals, vec![(1, 2), (3, 8)]);
+        du.push((9, 10));
+        assert_eq!(du.intervals, vec![(1, 2), (3, 8), (9, 10)]);
+    }
 }
