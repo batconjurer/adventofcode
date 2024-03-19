@@ -1,0 +1,1 @@
+CMakeLists.txt not found in /home/satan/Projects/adventofcode/aoc2023/day1 Select CMakeLists.txt
