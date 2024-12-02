@@ -1,13 +1,8 @@
-use std::cmp::{max, Ordering};
-use std::collections::{BinaryHeap, HashMap, HashSet, VecDeque};
+use std::cmp::Ordering;
+use std::collections::{BinaryHeap, HashMap, HashSet};
 use std::fs::File;
 use std::io::{BufRead, BufReader, Write};
 
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-enum PlotType {
-    Garden,
-    Rock
-}
 
 #[derive(Debug, Clone)]
 struct Grid {
@@ -92,7 +87,8 @@ fn parse(filename: &str) -> Grid{
         rows: 0,
         cols: 0,
     };
-
+    let mut odd_rocks = 0;
+    let mut even_rocks = 0;
     let mut row = 0usize;
     while let Ok(length) = reader.read_line(&mut line) {
         if length == 0 {
@@ -106,7 +102,13 @@ fn parse(filename: &str) -> Grid{
                     grid.plots.insert((row, col));
                     grid.start = (row as i64, col as i64);
                 }
-                '#' => {},
+                '#' => {
+                    if (row + col) % 2 == 0 {
+                        even_rocks += 1;
+                    } else {
+                        odd_rocks += 1;
+                    }
+                },
                 _ => unreachable!(),
             }
             cols = col;
@@ -116,6 +118,7 @@ fn parse(filename: &str) -> Grid{
         line.clear();
     }
     grid.rows = row;
+    println!("Odd rocks {}, even rocks {}", odd_rocks, even_rocks);
     grid
 }
 
@@ -127,7 +130,7 @@ struct State {
 
 impl Ord for State {
     fn cmp(&self, other: &Self) -> Ordering {
-        // Notice that the we flip the ordering on costs.
+        // Notice that then we flip the ordering on costs.
         // In case of a tie we compare positions - this step is necessary
         // to make implementations of `PartialEq` and `Ord` consistent.
         other.dist.cmp(&self.dist)
@@ -145,10 +148,64 @@ impl PartialOrd for State {
 
 fn part_one(filename: &str) {
     let grid = parse(filename);
-    let reachable = step_counter(&grid, 131, grid.start);
+    let reachable = step_counter(&grid,  131*4 + 65, grid.start);
     println!("Part one: {}", reachable);
 }
 
+#[allow(dead_code)]
+fn write_dists_to_file(distances: &HashMap<(i64, i64), usize>, grid: &Grid) {
+    let min_row = distances
+        .iter()
+        .map(|((row, _), _)| *row)
+        .min()
+        .unwrap();
+    let max_row = distances
+        .iter()
+        .map(|((row, _), _)| *row)
+        .max()
+        .unwrap();
+    let min_col = distances
+        .iter()
+        .map(|((_, col), _)| *col)
+        .min()
+        .unwrap();
+    let max_col = distances
+        .iter()
+        .map(|((_, col), _)| *col)
+        .max()
+        .unwrap();
+    let mut file = File::create("dists.txt").unwrap();
+    for row in min_row..=max_row {
+        let mut line = String::new();
+        for col in min_col..=max_col {
+            let inner_row = if row < 0 {
+                (row % grid.rows as i64) + grid.rows as i64
+            } else {
+                row % grid.rows as i64
+            } as usize;
+            let inner_col = if col < 0 {
+                (col % grid.cols as i64) + grid.cols as i64
+            } else {
+                col % grid.cols as i64
+            } as usize;
+            if let Some(dist) = distances.get(&(row, col)) {
+                if *dist >= 100 {
+                    line.push_str(&format!(" {}", dist));
+                } else if *dist >= 10 {
+                    line.push_str(&format!("  {}", dist));
+                } else {
+                    line.push_str(&format!("   {}", dist));
+                }
+            } else if grid.plots.contains(&(inner_row, inner_col)) {
+                line.push_str("   .");
+            } else {
+                line.push_str("   #");
+            }
+        }
+        writeln!(file, "{}", line).unwrap();
+        line.clear();
+    }
+}
 fn step_counter(grid: &Grid, max_steps: usize, start_point: (i64, i64)) -> usize {
     let mut queue = BinaryHeap::new();
     queue.push(State{ pos: start_point, dist: 0usize});
@@ -169,57 +226,7 @@ fn step_counter(grid: &Grid, max_steps: usize, start_point: (i64, i64)) -> usize
             }
         }
     }
-    let min_row = distances
-        .iter()
-        .map(|((row, col), _)| *row)
-        .min()
-        .unwrap();
-    let max_row = distances
-        .iter()
-        .map(|((row, col), _)| *col)
-        .max()
-        .unwrap();
-    let min_col = distances
-        .iter()
-        .map(|((row, col), _)| *row)
-        .min()
-        .unwrap();
-    let max_col = distances
-        .iter()
-        .map(|((row, col), _)| *col)
-        .max()
-        .unwrap();
-    let mut file = File::create("dists.txt").unwrap();
-    for row in min_row..=max_row {
-        let mut line = String::new();
-        for col in min_col..=max_col {
-            let inner_row = if row < 0 {
-                (row % grid.rows as i64) + grid.rows as i64
-            } else {
-                row % grid.rows as i64
-            } as usize;
-            let inner_col = if col < 0 {
-                (col % grid.cols as i64) + grid.cols as i64
-            } else {
-                col % grid.cols as i64
-            } as usize;
-           if let Some(dist) = distances.get(&(row, col)) {
-               if *dist >= 100 {
-                   line.push_str(&format!(" {}", dist));
-               } else if *dist >= 10 {
-                   line.push_str(&format!("  {}", dist));
-               } else {
-                   line.push_str(&format!("   {}", dist));
-               }
-           } else if grid.plots.contains(&(inner_row, inner_col)) {
-               line.push_str("   .");
-           } else {
-               line.push_str("   #");
-           }
-        }
-        writeln!(file, "{}", line).unwrap();
-        line.clear();
-    }
+
     distances.iter()
         .filter_map(|((r, h), dist)| {
             (*dist <= max_steps && (r + h)% 2 == (grid.start.0 + grid.start.1 + (max_steps as i64 % 2)) % 2).then_some((*r, *h))
@@ -227,17 +234,26 @@ fn step_counter(grid: &Grid, max_steps: usize, start_point: (i64, i64)) -> usize
 
 }
 
-fn part_two(filename: &str, scale: usize) {
-    let grid = parse(filename);
-    let full_grid = 7495;
-    //let interior = full_grid * (2 * (scale - 1) * scale + 1);
-    let steps = step_counter(&grid, 131 * scale + 65, grid.start);
-    println!("Steps: {}", steps);
+fn part_two(scale: u64) {
+    //scale = 202300;
+    // 65 steps from:
+    // center: 7461
+    // top left: 7433
+    // top right: 7433
+    // bottom left: 7429
+    // bottom right: 7429
+    let side = 2 * scale + 1;
+    let square = side * side;
+    let centers = square / 2 + 1;
+    let off_centers = square - centers;
+    let steps = centers * 7461 + off_centers * 7433 + 2*scale*scale;
+    println!("Steps: {}", steps  );
    // println!("Border: {}", steps - interior);
 
 }
 
 fn main() {
     part_one("input.txt");
-    //part_two("input.txt", 0);
+    part_two(202300);
 }
+
