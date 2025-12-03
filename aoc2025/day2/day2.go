@@ -12,8 +12,6 @@ import (
 var (
     part_one uint64 = 0
     ranges [][2]uint64
-    max_high uint64 = 0
-    min_low uint64 = 10000000000
 )
 
 func parseInput(filename string, callback func(uint64, uint64) ) {
@@ -118,8 +116,6 @@ func partTwo(filename string) {
 }
 
 func storeRanges(low uint64, high uint64) {
-    max_high = Max(max_high, high)
-    min_low = Min(min_low, low)
     new_range := [2]uint64{low, high}
     ranges = append(ranges, new_range)
 }
